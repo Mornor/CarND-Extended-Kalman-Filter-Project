@@ -10,24 +10,16 @@
 
 class FusionEKF {
   public:
-      /**
-      * Constructor.
-      */
+      // Constructor
       FusionEKF();
 
-      /**
-      * Destructor.
-      */
+      // Destructor
       virtual ~FusionEKF();
 
-      /**
-      * Run the whole flow of the Kalman Filter from here.
-      */
+      // Run the whole flow of the Kalman Filter from here.
       void ProcessMeasurement(const MeasurementPackage &measurement_pack);
 
-      /**
-      * Kalman Filter update and prediction math lives in here.
-      */
+      // Kalman Filter update and prediction math lives in here.
       KalmanFilter ekf_;
 
   private:
