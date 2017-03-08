@@ -35,7 +35,7 @@ FusionEKF::FusionEKF() {
 
     // measurement covariance for the radar
     R_radar_ = MatrixXd(3, 3);
-    R_radar_ << 0.0225, 0,
+    R_radar_ << 0.0225, 0, 0,
                 0, 0.0225, 0, 
                 0, 0, 0.0225;
     
