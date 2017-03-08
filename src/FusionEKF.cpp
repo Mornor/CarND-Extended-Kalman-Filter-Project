@@ -18,10 +18,10 @@ FusionEKF::FusionEKF() {
 
     // state covariance matrix P
     ekf_.P_ = MatrixXd(4, 4);
-    ekf_.P_ <<   1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1000, 0,
-            0, 0, 0, 1000;
+    ekf_.P_ <<  1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1000, 0,
+                0, 0, 0, 1000;
 
     // measurement covariance for the laser
     R_laser_ = MatrixXd(2, 2);
