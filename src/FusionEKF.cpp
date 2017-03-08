@@ -44,10 +44,10 @@ FusionEKF::FusionEKF() {
 
     // initial transition matrix F_
     ekf_.F_ = MatrixXd(4, 4);
-    ekf_.F_ <<   1, 0, 1, 0,
-            0, 1, 0, 1,
-            0, 0, 1, 0,
-            0, 0, 0, 1;
+    ekf_.F_ <<  1, 0, 1, 0,
+                0, 1, 0, 1,
+                0, 0, 1, 0,
+                0, 0, 0, 1;
 
     VectorXd x_ = VectorXd(4);
     x_ << 1, 1, 1, 1;
@@ -81,6 +81,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
           float x_cart = measurement_pack.raw_measurements_[0] * cos(measurement_pack.raw_measurements_[1]);
           float y_cart = measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]);
 
+        // Test if the conversion from polar to cartesian coordiante did not fail
         if (x_cart == 0 or y_cart == 0){
             return;
         }
@@ -109,10 +110,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
     previous_timestamp_ = measurement_pack.timestamp_;
 
-    ekf_.F_ << 1, 0, dt, 0,
-            0, 1, 0, dt,
-            0, 0, 1, 0,
-            0, 0, 0, 1;
+    ekf_.F_ <<  1, 0, dt, 0,
+                0, 1, 0, dt,
+                0, 0, 1, 0,
+                0, 0, 0, 1;
 
     ekf_.Q_ << pow(dt, 4) / 4 * noise_ax, 0, pow(dt, 3) / 2 * noise_ax, 0,
             0, pow(dt, 4) / 4 * noise_ay, 0, pow(dt, 3) / 2 * noise_ay,
