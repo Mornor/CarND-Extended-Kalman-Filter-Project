@@ -77,17 +77,16 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
         // first measurement
         cout << "EKF: " << endl;
-        ekf_.x_ = VectorXd(4);
-        ekf_.x_ << 1, 1, 1, 1;
 
         if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
             float x_cart = measurement_pack.raw_measurements_[0] * cos(measurement_pack.raw_measurements_[1]);
             float y_cart = measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]);
 
-        // Test if the conversion from polar to cartesian coordiante did not fail
+        // Test if there is no null values
         if (x_cart == 0 or y_cart == 0){
             return;
         }
+
 
         ekf_.x_ << x_cart, y_cart, 0, 0;
     }
