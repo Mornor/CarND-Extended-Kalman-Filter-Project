@@ -120,11 +120,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
     if(dt > 0.001){
 
-        // Error in the floating point calculation
-        if(dt == 1){
-            dt = 1e-8;
-        }
-
         ekf_.F_ <<  1, 0, dt, 0,
                 0, 1, 0, dt,
                 0, 0, 1, 0,
