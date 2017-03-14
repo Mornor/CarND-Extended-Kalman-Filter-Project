@@ -1,5 +1,8 @@
 #include "kalman_filter.h"
 
+#include <iostream>
+using namespace std;
+
 KalmanFilter::KalmanFilter() {}
 
 KalmanFilter::~KalmanFilter() {}
@@ -60,4 +63,13 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
     P_ = (I - K * H_) * P_;
+
+    cout << "z = " << z << endl;
+    cout << "zpred = " << z_pred << endl; 
+    cout << "y = " << y << endl;
+    cout << "S = " << S << endl;
+    cout << "Si = " << Si << endl;
+    cout << "K = " << K << endl;
+
+    // z, z_pred, y, S, Si, and K
 }

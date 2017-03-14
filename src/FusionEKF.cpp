@@ -16,48 +16,40 @@ using std::vector;
  */
 FusionEKF::FusionEKF() {
     is_initialized_ = false;
-
     previous_timestamp_ = 0.0;
 
-    // state covariance matrix P
-    ekf_.P_ = MatrixXd(4, 4);
-    ekf_.P_ <<  1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1000, 0,
-                0, 0, 0, 1000;
-
-    // measurement covariance for the laser
+     // initializing matrices
     R_laser_ = MatrixXd(2, 2);
     R_laser_ << 0.0225, 0,
-                0, 0.0225;
+            0, 0.0225;
 
-    // Laser measurement matrix
-    H_laser_ = MatrixXd(2, 4);
-    H_laser_ << 1, 0, 0, 0,
-                0, 1, 0, 0;
-
-    // measurement covariance for the radar
     R_radar_ = MatrixXd(3, 3);
     R_radar_ << 0.0225, 0, 0,
-                0, 0.0225, 0, 
-                0, 0, 0.0225;
-    
-    // Radar measurement matrix
-    Hj_ = MatrixXd(3, 4);
+            0, 0.0225, 0,
+            0, 0, 0.0225;
 
-    // initial transition matrix F_
-    ekf_.F_ = MatrixXd(4, 4);
-    ekf_.F_ <<  1, 0, 1, 0,
-                0, 1, 0, 1,
-                0, 0, 1, 0,
-                0, 0, 0, 1;
+    H_laser_ = MatrixXd(2, 4);
+    H_laser_ << 1, 0, 0, 0,
+            0, 1, 0, 0;
+
+    //state covariance matrix P
+    MatrixXd P_ = MatrixXd(4, 4);
+    P_ << 1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1000, 0,
+            0, 0, 0, 1000;
+
+    MatrixXd F_ = MatrixXd(4, 4);
+    MatrixXd Q_ = MatrixXd(4, 4);
 
     VectorXd x_ = VectorXd(4);
     x_ << 1, 1, 1, 1;
 
-    MatrixXd Q_ = MatrixXd(4, 4);
+    ekf_.Init(x_, P_, F_, H_laser_, R_laser_, Q_);
 
-    ekf_.Init(x_, ekf_.P_, ekf_.F_, H_laser_, R_laser_, Q_);
+    // Acceleration noise component
+    noise_ax = 5;
+    noise_ay = 5;
 }
 
 /**
@@ -76,7 +68,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     if (!is_initialized_) {
 
         // first measurement
-        cout << "EKF: " << endl;
+        //cout << "EKF: " << endl;
         ekf_.x_ = VectorXd(4);
         ekf_.x_ << 1, 1, 1, 1;
 
@@ -111,14 +103,14 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    *  Prediction
    ****************************************************************************/
 
-    cout << "Current " << measurement_pack.timestamp_ << endl; 
-    cout << "Previous " << previous_timestamp_ << endl; 
+    //cout << "Current " << measurement_pack.timestamp_ << endl; 
+    //cout << "Previous " << previous_timestamp_ << endl; 
 
     float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
 
     cout << "dt = " << dt << endl; 
 
-    if(dt > 0.001){
+    if(dt > 0){
 
         ekf_.F_ <<  1, 0, dt, 0,
                 0, 1, 0, dt,
@@ -153,12 +145,3 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   cout << "x_ = " << ekf_.x_ << endl;
   cout << "P_ = " << ekf_.P_ << endl;
 }
-
-/*
-try{
-      ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
-      ekf_.R_ = R_radar_;
-      ekf_.UpdateEKF(measurement_pack.raw_measurements_);
-    }catch(const std::invalid_argument& e){
-      cout << "Invalid Jacobian, skipping update" << endl;
-    } (edited)*/

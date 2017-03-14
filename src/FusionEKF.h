@@ -35,6 +35,10 @@ class FusionEKF {
     MatrixXd R_radar_;
     MatrixXd H_laser_;
     MatrixXd Hj_;
+
+    // Noise var
+    int noise_ax = 5;
+    int noise_ay = 5;
 };
 
 #endif /* FusionEKF_H_ */
