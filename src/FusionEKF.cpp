@@ -77,10 +77,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
         // first measurement
         cout << "EKF: " << endl;
+        ekf_.x_ = VectorXd(4);
+        ekf_.x_ << 1, 1, 1, 1;
 
         if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-            float x_cart = measurement_pack.raw_measurements_[0] * cos(measurement_pack.raw_measurements_[1]);
-            float y_cart = measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]);
+            double x_cart = (double)(measurement_pack.raw_measurements_[0] * cos(measurement_pack.raw_measurements_[1]));
+            double y_cart = (double)(measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]));
 
         // Test if there is no null values
         if (x_cart == 0 or y_cart == 0){
@@ -96,7 +98,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
             return;
         }
 
-        ekf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
+        ekf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0.0, 0.0;
 
     }
 
@@ -109,7 +111,18 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    *  Prediction
    ****************************************************************************/
 
-    float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
+    cout << "Current " << measurement_pack.timestamp_ << endl; 
+    cout << "Previous " << previous_timestamp_ << endl; 
+
+    double dt = (double)(measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
+    cout << "dt before = " << dt << endl; 
+    
+    /*if (dt > 0.01){
+        dt = 0.01;
+    }*/
+
+    cout << "dt after = " << dt << endl; 
+
     previous_timestamp_ = measurement_pack.timestamp_;
 
     ekf_.F_ <<  1, 0, dt, 0,
@@ -131,7 +144,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
         ekf_.R_ = R_radar_;
         ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
-        ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+        ekf_.UpdateEKF(measurement_pack.raw_measurements_);    
   } else {
         ekf_.R_ = R_laser_;
         ekf_.H_ = H_laser_;
