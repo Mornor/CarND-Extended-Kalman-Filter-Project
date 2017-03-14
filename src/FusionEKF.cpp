@@ -61,9 +61,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
    *  Initialization
    ****************************************************************************/
-    // Acceleration noise component
-    int noise_ax = 5;
-    int noise_ay = 5;
 
     if (!is_initialized_) {
 
