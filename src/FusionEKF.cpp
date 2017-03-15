@@ -34,7 +34,7 @@ FusionEKF::FusionEKF() {
 
     //state covariance matrix P
     MatrixXd P_ = MatrixXd(4, 4);
-    P_ << 1, 0, 0, 0,
+    P_ <<   1, 0, 0, 0,
             0, 1, 0, 0,
             0, 0, 1000, 0,
             0, 0, 0, 1000;
@@ -64,7 +64,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
     if (!is_initialized_) {
 
-        // first measurement, we do not now px and py (position x and y)
+        // first measurement, we do not now px and py (position x and y), neither vx and vy
         float px = 0; 
         float py = 0;
         float vx = 0; 
@@ -96,8 +96,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    ****************************************************************************/
 
     float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
-
-    cout << "dt = " << dt << endl; 
 
     ekf_.F_ <<  1, 0, dt, 0,
                 0, 1, 0, dt,
