@@ -102,10 +102,15 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                 0, 0, 1, 0,
                 0, 0, 0, 1;
 
-    ekf_.Q_ <<  pow(dt, 4) / 4 * noise_ax, 0, pow(dt, 3) / 2 * noise_ax, 0,
-                0, pow(dt, 4) / 4 * noise_ay, 0, pow(dt, 3) / 2 * noise_ay,
-                pow(dt, 3) / 2 * noise_ax, 0, pow(dt, 2) * noise_ax, 0,
-                0, pow(dt, 3) / 2 * noise_ay, 0, pow(dt, 2) * noise_ay;
+    // Avoid too much computation while computing the Q matrix
+    dt_2 = pow(dt, 2); 
+    dt_3 = pow(dt, 3) / 2;
+    dt_4 = pow(dt, 4) / 4;  
+
+    ekf_.Q_ <<  dt_4 * noise_ax, 0, dt_3 * noise_ax, 0,
+                0, dt_4 * noise_ay, 0, dt_3 * noise_ay,
+                dt_3 * noise_ax, 0, dt_2 * noise_ax, 0,
+                0, dt_3 * noise_ay, 0, dt_2 * noise_ay;
 
     ekf_.Predict();
 
