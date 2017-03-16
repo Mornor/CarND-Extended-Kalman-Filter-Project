@@ -48,8 +48,8 @@ FusionEKF::FusionEKF() {
     ekf_.Init(x_, P_, F_, H_laser_, R_laser_, Q_);
 
     // Acceleration noise component
-    noise_ax = 5;
-    noise_ay = 5;
+    noise_ax = 9;
+    noise_ay = 9;
 }
 
 /**
