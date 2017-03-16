@@ -103,9 +103,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                 0, 0, 0, 1;
 
     // Avoid too much computation while computing the Q matrix
-    dt_2 = pow(dt, 2); 
-    dt_3 = pow(dt, 3) / 2;
-    dt_4 = pow(dt, 4) / 4;  
+    double dt_2 = pow(dt, 2); 
+    double dt_3 = pow(dt, 3) / 2;
+    double dt_4 = pow(dt, 4) / 4;  
 
     ekf_.Q_ <<  dt_4 * noise_ax, 0, dt_3 * noise_ax, 0,
                 0, dt_4 * noise_ay, 0, dt_3 * noise_ay,
