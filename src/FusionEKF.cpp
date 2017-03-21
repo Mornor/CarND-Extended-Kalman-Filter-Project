@@ -73,12 +73,21 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
             float rho = measurement_pack.raw_measurements_[0];
             float phi = measurement_pack.raw_measurements_[1];
+            float range_rate = measurement_pack.raw_measurements_[2];
 
             px = rho * cos(phi);
             py = rho * sin(phi);
-
-            if(py == 0 or py == 0){
-                return; 
+            vx = range_rate * cos(phi);
+            vy = range_rate * sin(phi);
+    
+            if(fabs(px) < 0.0001){
+                px = 1;
+                ekf_.P_(0,0) = 1000;
+            }
+            
+            if(fabs(py) < 0.0001){
+                py = 1;
+                ekf_.P_(1,1) = 1000;
             }
         }
     
