@@ -3,3 +3,5 @@ build/
 .vscode/
 CarND-Mercedes-SF-Utilities/
 .idea/
+cmake-build-debug/
+*.pdf
