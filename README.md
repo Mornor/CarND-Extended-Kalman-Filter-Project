@@ -6,7 +6,7 @@
 
 ### Overview
 This is the 6th project of the <a href="https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013">Self Driving Car Engineer Nanodegree</a> I am taking part. <br>
-The aim of this project was to build a EKF (Extended Kalman Filter) in order to track the movement (here, a pedestrian) from both a Radar and a Lidar.
+The aim of this project was to build a EKF (Extended Kalman Filter) in order to track the movement (here, a pedestrian) from both Radar and Lidar data.
 
 ### Results
 This is an output of the result I was able to obtain: 
