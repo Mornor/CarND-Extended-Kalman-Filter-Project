@@ -11,6 +11,8 @@ The aim of this project was to build a EKF (Extended Kalman Filter) in order to 
 ### Results
 This is an output of the result I was able to obtain: 
 ![ekf_flow_chart](./readme_imgs/newplot.png)
+
+
 As the legend say, the green green line represents the real movement of the pedestrian, while based on the measurement (orange dots), the blue line represents what the EKF has been able to reproduce. 
 
 ### How the EKF has been here implemented
